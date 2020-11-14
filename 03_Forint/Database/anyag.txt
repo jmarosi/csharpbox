@@ -1,0 +1,7 @@
+femid	femnev
+1	Ezüst
+2	Réz
+3	Nikkel
+4	Cink
+5	Alumínium
+6	Ón

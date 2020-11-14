@@ -1,0 +1,8 @@
+tid	nev
+1	Bognár György
+2	Kósa István
+3	Bartos István
+4	Farkas Boldogfai Sándor
+5	Iván István
+6	Szabó Ferenc
+7	Berán Lajos
