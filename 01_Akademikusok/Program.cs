@@ -23,8 +23,11 @@ namespace Akademikusok
 
             // 2., élő rendes akadémikusok
             var x2 = tagList
-                .Join(tagsagList, tag => tag.Id, tagsag => tagsag.TagId, (tag, tagsag) => new
-                { tag.Nev, tag.Szuletett, tag.Elhunyt, tagsag.Forma })
+                .Join(tagsagList, 
+                       tag => tag.Id, 
+                       tagsag => tagsag.TagId, 
+                       (tag, tagsag) => new { tag.Nev, tag.Szuletett, tag.Elhunyt, tagsag.Forma }
+                 )
                 .Where(t => String.IsNullOrEmpty(t.Elhunyt) && t.Forma == "r") // élő és rendes
                 .OrderBy(t => t.Nev);
 
@@ -34,6 +37,8 @@ namespace Akademikusok
 
 
             // 3., kit mikor választottak meg először
+            // REV: A GroupBy és a Join együtt árulkodó; ezekből általában lehet GroupJoin; azzal talán kicsit egyszerűbb lenne
+            // Take(1) helyett inkább SingleOrDefault(); kifejezőbb és hatékonyabb is sokszor kicsit
             var x3 = tagsagList
                 .OrderBy(t => t.Ev) // év alapján sorba
                 .GroupBy(t => t.TagId) // csoportok id alapján (csoporton belül már év alapján rendezve)
@@ -65,6 +70,9 @@ namespace Akademikusok
             //  -szűrés azokra akik voltak levelezők és rendesek is
             //    -átlag(rendes.év - levelező.év)
             // 9.61839530332681
+            // REV: A GroupBy és a Select mindig komibnálható a GroupBy overloadjában
+            // REV: A where-t meg kellene próbálni előrébb tenni; hatékonyabb lenne
+            // REV: Ha a GroupBy() és a Select() egybe lenne gyúrva a végén, akkor az Average()-t is bele lehetne gyúrni egy plusz paraméterrel
             var avgTime = tagsagList
                 .GroupBy(x => x.TagId)
                 .Select(g => new { TagId = g.Key, Tagsag = g })

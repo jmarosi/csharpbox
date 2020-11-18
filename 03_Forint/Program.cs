@@ -16,7 +16,7 @@ namespace Forint
             var TkodList = new Deserializer<Tkod>().Deserialize(@".\Database\Tkod.txt");
 
             // Ezüst tartalmú érmék címlete és tömege
-            var EzustId = AnyagList.Single(x => x.FemNev == "Ezüst").AnyagId;
+            var EzustId = AnyagList.Single(x => x.FemNev == "Ezüst").AnyagId; // REV: Ez mehetett volna a lenti Where-be is, ha már ott van (ld. utolsó feladatod megoldása)
             var x1 = ErmeList
                 .Join(AkodList, e => e.ErmeId, a => a.ErmeId, (e, a) => new { e.Cimlet, e.Tomeg, a.FemId })
                 .Where(x => x.FemId == EzustId)
@@ -55,6 +55,7 @@ namespace Forint
 
 
             // A legnehezebb érméhez összesen mennyi fémet használtak
+            // REV: Én itt valószínáleg rendeztem volna és vettem volna az elsőt a külön keresés helyett
             var maxWeight = ErmeList.Max(e => e.Tomeg);
             var x4 = ErmeList
                 .Where(e => e.Tomeg == maxWeight)
@@ -90,6 +91,7 @@ namespace Forint
 
 
             // A 200Ft-os tervezője által kiadott egyéb érmék
+            // REV: Valószínűleg itt ezek a szűrések is mehettek volna a Where-be
             var ErmeId = ErmeList.Single(e => e.Cimlet == 200).ErmeId;
             var TervezoId = TkodList.Single(tk => tk.ErmeId == ErmeId).TervezoId;
             var x7 = ErmeList

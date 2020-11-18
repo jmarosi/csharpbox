@@ -19,7 +19,10 @@ namespace Forditoiroda
             // 1., <5000 karakter és összbevétel
             var smallDocs = DokuList.Where(d => d.Terjedelem <= 5000);
             var x1 = smallDocs
-                .Join(NyelvList, doku => doku.NyelvId, nyelv => nyelv.Id, (doku, nyelv) => new { Price = nyelv.Egysegar })
+                .Join(NyelvList, 
+                      doku => doku.NyelvId, 
+                      nyelv => nyelv.Id, 
+                      (doku, nyelv) => new { Price = nyelv.Egysegar })
                 .Sum(d => d.Price);
 
             Console.WriteLine("\n---[ 1. feladat: <5000 és összbevétel ]---");
@@ -57,6 +60,10 @@ namespace Forditoiroda
 
 
             // 4., magyarrol a legtöbb célnyelvre fordító
+            // REV: Ez talán kicsit bonyolult lett :)
+            // Step1: Nyelv Join Fordito Join Szemely
+            // Step2: Ami marad, arra egy GroupBy() SzemelyId alapján, belsejébe transzformáció: Count(forrásnyelv==magyar); 
+            // Step3: rendezés+first
             var x4 = ForditoList
                 .GroupBy(fordito => fordito.SzemelyId)
                 .SelectMany(g => g, (outer, inner) => new { TagId = outer.Key, inner.NyelvId })

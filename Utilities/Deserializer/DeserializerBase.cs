@@ -2,7 +2,7 @@
 
 namespace Utilities
 {
-    public abstract class DeserializerBase
+    public abstract class DeserializerBase // REV: Inkább DeserializableBase a felhasználás alapján
     {
         public virtual void AssignValues(string[] propertyValues, List<string> ignoredProperties = null)
         {
@@ -12,7 +12,7 @@ namespace Utilities
                 if (ignoredProperties == null || ignoredProperties.Contains(properties[i].Name) == false)
                 {
                     var type = properties[i].PropertyType.Name;
-                    switch (type)
+                    switch (type)  // REV: Értem a switch-et, de én inkább if-else és typeof kombóval mennék; ez a stringes dolog nagyon hamar el lesz írva 
                     {
                         case "Int32":
                             properties[i].SetValue(this, int.Parse(propertyValues[i]));
